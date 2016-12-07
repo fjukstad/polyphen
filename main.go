@@ -5,19 +5,6 @@ import (
 	"fmt"
 )
 
-type Variant struct {
-	Chromosome  string
-	Position    string
-	Id          string
-	Reference   string
-	Alternative string
-	Qual        string
-	Filter      string
-	Info        string
-	Format      string
-	Additional  []string
-}
-
 func main() {
 
 	filename := flag.String("f", "input.vcf", "input vcf file")
@@ -40,7 +27,12 @@ func main() {
 		return
 	}
 
-	fmt.Println(variants)
+	err = writeBatchQuery(variants, "polyphen2-batchquery.txt")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	u := "http://genetics.bwh.harvard.edu/cgi-bin/ggi/ggi2.cgi"
 	fmt.Println(u)
 }
