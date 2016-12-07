@@ -24,6 +24,8 @@ func main() {
 	snpFilter := flag.String("snpfilter", "1", "Transcripts option. Can be 0 for all, 1 for canonical, or 3 for CCDS")
 	status := flag.Bool("status", false, "get output status of running polyphen query")
 	id := flag.String("id", "", "Polyphen session ID")
+	download := flag.Bool("download", false, "download results")
+	outputDirectory := flag.String("o", "output", "output directory to store results")
 
 	flag.Parse()
 
@@ -32,10 +34,22 @@ func main() {
 			fmt.Println("Error: Please provide a valid Session ID")
 			return
 		}
-
 		statusMessage := getStatusMessage(*id)
 		fmt.Println("Batch query status:")
 		fmt.Println(statusMessage)
+		return
+	}
+
+	if *download {
+		if *id == "" {
+			fmt.Println("Error: Please provide a valid Session ID")
+			return
+		}
+		err := downloadResults(*id, *outputDirectory)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println("Output saved in", *outputDirectory)
 		return
 	}
 
