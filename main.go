@@ -22,8 +22,22 @@ func main() {
 	ucscDb := flag.String("UCSCDB", "hg19", "Genome assembly")
 	snpFunc := flag.String("snpfunc", "m", "Annotations” option. Can be m for missense, c for coding, or empty for all")
 	snpFilter := flag.String("snpfilter", "1", "Transcripts option. Can be 0 for all, 1 for canonical, or 3 for CCDS")
+	status := flag.Bool("status", false, "get output status of running polyphen query")
+	id := flag.String("id", "", "Polyphen session ID")
 
 	flag.Parse()
+
+	if *status {
+		if *id == "" {
+			fmt.Println("Error: Please provide a valid Session ID")
+			return
+		}
+
+		statusMessage := getStatusMessage(*id)
+		fmt.Println("Batch query status:")
+		fmt.Println(statusMessage)
+		return
+	}
 
 	if *email == "" {
 		fmt.Println("Error: Please specify an e-mail address")
