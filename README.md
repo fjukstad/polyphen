@@ -1,6 +1,6 @@
 # polyphen
-Simple CLI to submit, check status and download results from Polyphen2 batch
-queries. Reads both `vcf` files and already formatted queries. 
+Simple command line tool to submit, check status and download results from
+Polyphen2 batch queries. Reads both `vcf` files and already formatted queries. 
 
 # Example 
 Submit a batch query (`example.txt` from the [PolyPhen-2 User
