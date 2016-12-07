@@ -1,16 +1,10 @@
 package main
 
 import (
-	"bytes"
 	"errors"
 	"flag"
 	"fmt"
-	"io"
-	"io/ioutil"
-	"mime/multipart"
 	"net/http"
-	"os"
-	"path/filepath"
 )
 
 func main() {
@@ -78,72 +72,10 @@ func main() {
 		}
 	}
 
-	params := map[string]string{
-		"_ggi_project":         "PPHWeb2",
-		"_ggi_origin":          "query",
-		"_ggi_target_pipeline": "1",
-		"MODELNAME":            *modelName,
-		"UCSCDB":               *ucscDb,
-		"NOTIFYME":             *email,
-		"SNPFUNC":              *snpFunc,
-		"SNPFILTER":            *snpFilter,
-	}
-
-	bf, err := os.Open(batchQueryFilename)
-	if err != nil {
-		fmt.Println("Could not open batch query file", err)
-		return
-	}
-
-	body := &bytes.Buffer{}
-	writer := multipart.NewWriter(body)
-
-	part, err := writer.CreateFormFile("_ggi_batch_file", filepath.Base(batchQueryFilename))
+	sessionId, err := submitQuery(batchQueryFilename, *modelName, *ucscDb,
+		*email, *snpFunc, *snpFilter)
 	if err != nil {
 		fmt.Println(err)
-		return
-	}
-
-	_, err = io.Copy(part, bf)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	for key, val := range params {
-		err = writer.WriteField(key, val)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-	}
-	writer.Close()
-
-	u := "http://genetics.bwh.harvard.edu/cgi-bin/ggi/ggi2.cgi"
-	req, err := http.NewRequest("POST", u, body)
-	if err != nil {
-		fmt.Println("Could not create polyphen2 request", err)
-		return
-	}
-	req.Header.Set("Content-Type", writer.FormDataContentType())
-
-	client := &http.Client{}
-
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("Could not perfor batch query to polyphen2", err)
-		return
-	}
-
-	cookies := resp.Cookies()
-	sessionId, err := getSessionId(cookies)
-	if err != nil {
-		fmt.Println("Error: Bad response from Polyphen:")
-		responseBody, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return
-		}
-		fmt.Println(string(responseBody))
 		return
 	}
 
