@@ -1,0 +1,7 @@
+# Chromosome:position Reference/Variant nucleotides
+chr1:1267483 G/A
+chr1:1158631 A/C,G,T
+chr2:167262274 C/T
+chr4:264904 G/A
+chr7:122261636 G/T
+chr16:53698869 T/C
