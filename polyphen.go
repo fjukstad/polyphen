@@ -15,7 +15,7 @@ func writeBatchQuery(variants []Variant, filename string) error {
 	w := csv.NewWriter(f)
 	w.Comma = '\t'
 
-	header := []string{"Chromosome:position", "Reference/Variant nucleotides"}
+	header := []string{"# Chromosome:position", "Reference/Variant nucleotides"}
 	err = w.Write(header)
 	if err != nil {
 		return errors.Wrap(err, "Could not write record to batch query file")
@@ -30,5 +30,4 @@ func writeBatchQuery(variants []Variant, filename string) error {
 	}
 	w.Flush()
 	return w.Error()
-
 }
