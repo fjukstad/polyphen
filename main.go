@@ -1,11 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
-	"os"
-	"strings"
 )
 
 type Variant struct {
@@ -37,54 +34,10 @@ func main() {
 		return
 	}
 
-	f, err := os.Open(*filename)
+	variants, err := parseVcf(*filename)
 	if err != nil {
-		fmt.Println("Error: Can't open file", *filename, err)
+		fmt.Println(err)
 		return
-	}
-	defer f.Close()
-
-	var variants []Variant
-
-	scanner := bufio.NewScanner(f)
-
-	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.HasPrefix(line, "#") {
-			continue
-		}
-		fields := strings.Split(line, ";")
-		if len(fields) < 3 {
-			fmt.Println("Error: could not parse vcf file. Something is wrong here:", line)
-			return
-		}
-		// grab the first part of each line (contains chromosome, ref, alt)
-		variantInfo := strings.Split(fields[0], "\t")
-		format := fields[1]
-		additionalFields := fields[2 : len(fields)-1]
-
-		chromosome := variantInfo[0]
-		pos := variantInfo[1]
-		id := variantInfo[2]
-		ref := variantInfo[3]
-		alt := variantInfo[4]
-		qual := variantInfo[5]
-		filter := variantInfo[6]
-		info := variantInfo[7]
-
-		variants = append(variants, Variant{
-			chromosome,
-			pos,
-			id,
-			ref,
-			alt,
-			qual,
-			filter,
-			info,
-			format,
-			additionalFields,
-		})
-
 	}
 
 	fmt.Println(variants)
