@@ -38,17 +38,18 @@ func parseVcf(filename string) ([]Variant, error) {
 			continue
 		}
 		fields := strings.Split(line, ";")
-		if len(fields) < 2 {
-			return []Variant{}, errors.New("Error: could not parse vcf file. Something is wrong here:" + line)
-		}
 		// grab the first part of each line (contains chromosome, ref, alt)
 		variantInfo := strings.Split(fields[0], "\t")
-		format := fields[1]
 		var additionalFields []string
+        var format string
 		if len(fields) > 2 {
+            format =  fields[1]
 			additionalFields = fields[2 : len(fields)-1]
 		}
 
+        if len(variantInfo) < 7 {
+            return []Variant{}, errors.New("Could not parse vcf file. Error on line: \n"+line)
+        }
 		chromosome := variantInfo[0]
 		pos := variantInfo[1]
 		id := variantInfo[2]

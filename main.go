@@ -14,7 +14,7 @@ func main() {
 	email := flag.String("email", "", "e-mail for use in polyphen notification service")
 	modelName := flag.String("modelname", "HumDiv", "Classifier model")
 	ucscDb := flag.String("UCSCDB", "hg19", "Genome assembly")
-	snpFunc := flag.String("snpfunc", "m", "Annotations” option. Can be m for missense, c for coding, or empty for all")
+	snpFunc := flag.String("snpfunc", " ", "Annotations” option. Can be m for missense, c for coding, or empty for all")
 	snpFilter := flag.String("snpfilter", "1", "Transcripts option. Can be 0 for all, 1 for canonical, or 3 for CCDS")
 	status := flag.Bool("status", false, "get output status of running polyphen query")
 	id := flag.String("id", "", "Polyphen session ID")
