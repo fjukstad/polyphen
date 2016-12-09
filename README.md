@@ -25,7 +25,7 @@ progress with session ID 78 ... 2a
 
 Check the status of the query:
 ```
-$ polyphen -status -id 78608c2eb3a6d2c3699ab364d9d4205a07b20f2a
+$ polyphen -status 78608c2eb3a6d2c3699ab364d9d4205a07b20f2a
 Batch query status:
 Started Wed Dec  7 15:19:33 2016
 Completed Wed Dec  7 15:22:05 2016
@@ -34,7 +34,7 @@ Completed Wed Dec  7 15:22:05 2016
 Download results:
 
 ```
-$ polyphen -download -id 78608c2eb3a6d2c3699ab364d9d4205a07b20f2a
+$ polyphen -download 78608c2eb3a6d2c3699ab364d9d4205a07b20f2a
 Output saved in output
 $ ls output/
 pph2-full.txt  pph2-log.txt  pph2-short.txt  pph2-snps.txt

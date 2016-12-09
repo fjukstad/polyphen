@@ -16,30 +16,21 @@ func main() {
 	ucscDb := flag.String("UCSCDB", "hg19", "Genome assembly")
 	snpFunc := flag.String("snpfunc", " ", "Annotations” option. Can be m for missense, c for coding, or empty for all")
 	snpFilter := flag.String("snpfilter", "1", "Transcripts option. Can be 0 for all, 1 for canonical, or 3 for CCDS")
-	status := flag.Bool("status", false, "get output status of running polyphen query")
-	id := flag.String("id", "", "Polyphen session ID")
-	download := flag.Bool("download", false, "download results")
+	status := flag.String("status", "", "Get status for Session ID")
+	download := flag.String("download", "", "Download results for Session ID")
 	outputDirectory := flag.String("o", "output", "output directory to store results")
 
 	flag.Parse()
 
-	if *status {
-		if *id == "" {
-			fmt.Println("Error: Please provide a valid Session ID")
-			return
-		}
-		statusMessage := getStatusMessage(*id)
+	if *status != "" {
+		statusMessage := getStatusMessage(*status)
 		fmt.Println("Batch query status:")
 		fmt.Println(statusMessage)
 		return
 	}
 
-	if *download {
-		if *id == "" {
-			fmt.Println("Error: Please provide a valid Session ID")
-			return
-		}
-		err := downloadResults(*id, *outputDirectory)
+	if *download != "" {
+		err := downloadResults(*download, *outputDirectory)
 		if err != nil {
 			fmt.Println(err)
 		}
