@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/pkg/errors"
 )
@@ -48,6 +49,11 @@ func getStatusMessage(id string) string {
 	}
 	responseBody, err := ioutil.ReadAll(resp.Body)
 	statusMessage := string(responseBody)
+
+	if strings.Contains(statusMessage, "Object not found!") {
+		return "Batch query not found for id " + id + ". If you've just submitted it, check back later!"
+	}
+
 	resp, err = http.Get(baseUrl + "completed.txt")
 	if err == nil {
 		responseBody, err = ioutil.ReadAll(resp.Body)
